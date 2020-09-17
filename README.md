@@ -6,6 +6,56 @@
 
 # Germania KG · Language Negotiation
 
+This middleware negotiates Client's preferred language (just like Will Durand's [Negotiation](https://github.com/willdurand/Negotiation)) but stores the language in a Request attribute `X-language-negotiated`. 
+
+## Usage
+
+### Setup
+
+```php
+<?php
+use Germania\LanguageNegotiation\LanguageNegotiationMiddleware;
+use Negotiation\LanguageNegotiator;
+
+$negotiator = new LanguageNegotiator();  
+$priorities = array('de', 'fu', 'en');
+
+new LanguageNegotiationMiddleware($negotiator, $priorities, null, null, null);
+```
+
+**Optional settings:**
+
+These are the default settings:
+
+```php
+// Defaults:
+$custom_header_name = "Accept-Language";
+$custom_attr_name = "X-language-negotiated";
+
+// Any PSR-3 Logger will do
+$logger = new Monolog; 
+
+new LanguageNegotiationMiddleware($negotiator, $priorities, $custom_header_name, $custom_attr_name, $logger);
+```
+
+
+
+### Usage in Controller
+
+Slim-like example:
+
+```php
+<?php
+class MyController
+{
+  public function __invoke(ServerRequestInterface $request, ResponseInterface $response, $args)
+  {
+    	// S.th. like 'fu'
+    	echo $request->getAttribute("X-language-negotiated");
+  }
+}
+```
+
 
 
 ## Development
