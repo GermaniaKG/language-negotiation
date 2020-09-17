@@ -8,6 +8,8 @@
 
 This middleware negotiates Client's preferred language (just like Will Durand's [Negotiation](https://github.com/willdurand/Negotiation)) but stores the language in a Request attribute `X-language-negotiated`. 
 
+Works with both **PSR-15 *SinglePass*** and traditional **Slim-like *DoublePass*** approach.
+
 ## Usage
 
 ### Setup

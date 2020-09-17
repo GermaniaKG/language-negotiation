@@ -1,7 +1,7 @@
 {
 	"name": "germania-kg/language-negotiation",
 
-	"description": "Language negotiation middleware",
+	"description": "Middleware to store negotiated client language in a Request attribute.",
 
 	"type":        "library",
 	"license":     "MIT",
