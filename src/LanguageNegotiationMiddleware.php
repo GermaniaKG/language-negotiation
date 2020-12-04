@@ -72,7 +72,7 @@ class LanguageNegotiationMiddleware implements MiddlewareInterface
      * @param string               $request_attribute_name Optional: Custom request attribute name
      * @param LoggerInterface|null $logger                 Optional: PSR-3 Logger
      */
-    public function __construct( AbstractNegotiator $negotiator, array $priorities, ?string $accept_language_header, ?string $request_attribute_name, ?LoggerInterface $logger)
+    public function __construct( AbstractNegotiator $negotiator, array $priorities, string $accept_language_header = null, string $request_attribute_name = null, LoggerInterface $logger = null)
     {
         $this->setNegotiator( $negotiator );
         $this->setPriorities( $priorities );
