@@ -6,7 +6,7 @@
 
 # Germania KG · Language Negotiation
 
-This middleware negotiates Client's preferred language (just like Will Durand's [Negotiation](https://github.com/willdurand/Negotiation)) but stores the language in a Request attribute `X-language-negotiated`. 
+This middleware stores the result of Will Durand's language [Negotiation](https://github.com/willdurand/Negotiation) language in a Request attribute `X-language-negotiated`. 
 
 Works with both **PSR-15 *SinglePass*** and traditional **Slim-like *DoublePass*** approach.
 
@@ -22,30 +22,27 @@ use Negotiation\LanguageNegotiator;
 $negotiator = new LanguageNegotiator();  
 $priorities = array('de', 'fu', 'en');
 
-new LanguageNegotiationMiddleware($negotiator, $priorities, null, null, null);
+new LanguageNegotiationMiddleware($negotiator, $priorities);
 ```
 
-**Optional settings:**
-
-These are the default settings:
+**Configuration using constructor :**
 
 ```php
 // Defaults:
-$custom_header_name = "Accept-Language";
-$custom_attr_name = "X-language-negotiated";
+$accept_header = "Accept-Language";
+$attr_name = "X-language-negotiated";
+$logger = new Monolog // Any PSR-3 Logger; 
 
-// Any PSR-3 Logger will do
-$logger = new Monolog; 
-
-new LanguageNegotiationMiddleware($negotiator, $priorities, $custom_header_name, $custom_attr_name, $logger);
+new LanguageNegotiationMiddleware($negotiator, $priorities, $accept_header, $attr_name, $logger);
 ```
 
 **Configuration using methods API:**
 
 ```php
-$middleware = new LanguageNegotiationMiddleware($negotiator, $priorities, null, null, null);
+$middleware = new LanguageNegotiationMiddleware($negotiator, $priorities);
 $middleware->setAcceptLanguageHeader("Accept-Language");
 $middleware->setRequestAttributeName("X-language-negotiated");
+$middleware->setLogger( $psr3_logger );
 ```
 
 
@@ -75,6 +72,8 @@ $ git clone git@github.com:GermaniaKG/language-negotiation.git
 $ cd language-negotiation
 $ composer install
 ```
+
+
 
 ## Unit tests
 

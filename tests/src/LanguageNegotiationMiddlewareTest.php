@@ -34,7 +34,7 @@ class LanguageNegotiationMiddlewareTest extends \PHPUnit\Framework\TestCase
     public function testInstantiation()
     {
 
-        $sut = new LanguageNegotiationMiddleware($this->negotiator, $this->priorities, null, null, null);
+        $sut = new LanguageNegotiationMiddleware($this->negotiator, $this->priorities);
 
         $this->assertIsCallable($sut);
         $this->assertInstanceOf(MiddlewareInterface::class, $sut);
