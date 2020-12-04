@@ -42,7 +42,7 @@ class LanguageNegotiationMiddleware implements MiddlewareInterface
      * Request header name
      * @var string
      */
-    public $accept_language_field = 'Accept-Language';
+    public $accept_language_header = 'Accept-Language';
 
 
     /**
@@ -68,15 +68,15 @@ class LanguageNegotiationMiddleware implements MiddlewareInterface
     /**
      * @param AbstractNegotiator   $negotiator             Will Durand's Language Negotiator
      * @param string[]             $priorities             Array with languages, e.g. `["de", "fr"]`
-     * @param string               $accept_language_field  Optional: Custom accept header name
+     * @param string               $accept_language_header  Optional: Custom accept header name
      * @param string               $request_attribute_name Optional: Custom request attribute name
      * @param LoggerInterface|null $logger                 Optional: PSR-3 Logger
      */
-    public function __construct( AbstractNegotiator $negotiator, array $priorities, ?string $accept_language_field, ?string $request_attribute_name, ?LoggerInterface $logger)
+    public function __construct( AbstractNegotiator $negotiator, array $priorities, ?string $accept_language_header, ?string $request_attribute_name, ?LoggerInterface $logger)
     {
         $this->setNegotiator( $negotiator );
         $this->setPriorities( $priorities );
-        $this->setAcceptLanguageField( $accept_language_field ?: $this->accept_language_field);
+        $this->setAcceptLanguageHeader( $accept_language_header ?: $this->accept_language_header);
         $this->setRequestAttributeName( $request_attribute_name ?: $this->request_attribute_name );
         $this->setLogger( $logger ?: new NullLogger );
     }
@@ -125,14 +125,14 @@ class LanguageNegotiationMiddleware implements MiddlewareInterface
     {
         $this->logger->debug("Language-negotiation settings", [
             'priorities'       => $this->priorities,
-            'acceptField'      => $this->accept_language_field,
+            'acceptField'      => $this->accept_language_header,
             'requestAttribute' => $this->request_attribute_name
         ]);
 
 
         // Read accept language
         try {
-            $accept_language_header = $request->getHeaderLine( $this->accept_language_field ) ?: null;
+            $accept_language_header = $request->getHeaderLine( $this->accept_language_header ) ?: null;
             $best_language_type = $this->negotiate($accept_language_header);
         }
         catch (\Throwable $e) {
@@ -214,11 +214,11 @@ class LanguageNegotiationMiddleware implements MiddlewareInterface
 
 
     /**
-     * @param string $accept_language_field Accept language header
+     * @param string $accept_language_header Accept language header
      */
-    public function setAcceptLanguageField( string $accept_language_field) : self
+    public function setAcceptLanguageHeader( string $accept_language_header) : self
     {
-        $this->accept_language_field = $accept_language_field;
+        $this->accept_language_header = $accept_language_header;
         return $this;
     }
 

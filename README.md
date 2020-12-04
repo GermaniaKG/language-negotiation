@@ -44,7 +44,7 @@ new LanguageNegotiationMiddleware($negotiator, $priorities, $custom_header_name,
 
 ```php
 $middleware = new LanguageNegotiationMiddleware($negotiator, $priorities, null, null, null);
-$middleware->setAcceptLanguageField("Accept-Language");
+$middleware->setAcceptLanguageHeader("Accept-Language");
 $middleware->setRequestAttributeName("X-language-negotiated");
 ```
 
