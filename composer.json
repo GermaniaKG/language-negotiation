@@ -7,8 +7,13 @@
 	"license":     "MIT",
 
 	"keywords": [
-		"Language negotiation",
-		"Middleware"
+		"language negotiation",
+		"middleware",
+		"content",
+		"negotiation",
+		"format",
+		"accept",
+		"header"
 	],
 
 	"authors": [
