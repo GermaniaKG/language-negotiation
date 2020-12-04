@@ -40,6 +40,14 @@ $logger = new Monolog;
 new LanguageNegotiationMiddleware($negotiator, $priorities, $custom_header_name, $custom_attr_name, $logger);
 ```
 
+**Configuration using methods API:**
+
+```php
+$middleware = new LanguageNegotiationMiddleware($negotiator, $priorities, null, null, null);
+$middleware->setAcceptLanguageHeader("Accept-Language");
+$middleware->setRequestAttributeName("X-language-negotiated");
+```
+
 
 
 ### Usage in Controller

@@ -28,7 +28,7 @@ class LanguageNegotiationMiddleware implements MiddlewareInterface
     /**
      * @var LanguageNegotiator
      */
-    public $negotiator = "User-Agent";
+    public $negotiator;
 
 
     /**
@@ -42,7 +42,7 @@ class LanguageNegotiationMiddleware implements MiddlewareInterface
      * Request header name
      * @var string
      */
-    public $accept_language_field = 'Accept-Language';
+    public $accept_language_header = 'Accept-Language';
 
 
     /**
@@ -68,19 +68,17 @@ class LanguageNegotiationMiddleware implements MiddlewareInterface
     /**
      * @param AbstractNegotiator   $negotiator             Will Durand's Language Negotiator
      * @param string[]             $priorities             Array with languages, e.g. `["de", "fr"]`
-     * @param string               $accept_language_field  Optional: Custom accept header name
+     * @param string               $accept_language_header  Optional: Custom accept header name
      * @param string               $request_attribute_name Optional: Custom request attribute name
      * @param LoggerInterface|null $logger                 Optional: PSR-3 Logger
      */
-    public function __construct( AbstractNegotiator $negotiator, array $priorities, ?string $accept_language_field, ?string $request_attribute_name, ?LoggerInterface $logger)
+    public function __construct( AbstractNegotiator $negotiator, array $priorities, ?string $accept_language_header, ?string $request_attribute_name, ?LoggerInterface $logger)
     {
-        $this->negotiator             = $negotiator;
-        $this->priorities             = $priorities;
-        $this->accept_language_field  = $accept_language_field ?: $this->accept_language_field;
-        $this->request_attribute_name = $request_attribute_name ?: $this->request_attribute_name;
-        $this->logger                 = $logger ?: new NullLogger;
-
-        $this->default_language = $this->priorities[0];
+        $this->setNegotiator( $negotiator );
+        $this->setPriorities( $priorities );
+        $this->setAcceptLanguageHeader( $accept_language_header ?: $this->accept_language_header);
+        $this->setRequestAttributeName( $request_attribute_name ?: $this->request_attribute_name );
+        $this->setLogger( $logger ?: new NullLogger );
     }
 
 
@@ -127,14 +125,14 @@ class LanguageNegotiationMiddleware implements MiddlewareInterface
     {
         $this->logger->debug("Language-negotiation settings", [
             'priorities'       => $this->priorities,
-            'acceptField'      => $this->accept_language_field,
+            'acceptField'      => $this->accept_language_header,
             'requestAttribute' => $this->request_attribute_name
         ]);
 
 
         // Read accept language
         try {
-            $accept_language_header = $request->getHeaderLine( $this->accept_language_field ) ?: null;
+            $accept_language_header = $request->getHeaderLine( $this->accept_language_header ) ?: null;
             $best_language_type = $this->negotiate($accept_language_header);
         }
         catch (\Throwable $e) {
@@ -188,6 +186,50 @@ class LanguageNegotiationMiddleware implements MiddlewareInterface
         ]);
 
         return $this->default_language;
+    }
+
+
+
+
+
+    /**
+     * @param AbstractNegotiator $negotiator
+     */
+    public function setNegotiator( AbstractNegotiator $negotiator) : self
+    {
+        $this->negotiator = $negotiator;
+        return $this;
+    }
+
+
+    /**
+     * @param array $priorities
+     */
+    public function setPriorities( array $priorities) : self
+    {
+        $this->priorities = $priorities;
+        $this->default_language = $this->priorities[0];
+        return $this;
+    }
+
+
+    /**
+     * @param string $accept_language_header Accept language header
+     */
+    public function setAcceptLanguageHeader( string $accept_language_header) : self
+    {
+        $this->accept_language_header = $accept_language_header;
+        return $this;
+    }
+
+
+    /**
+     * @param string $request_attribute_name Request attribute name
+     */
+    public function setRequestAttributeName( string $request_attribute_name) : self
+    {
+        $this->request_attribute_name = $request_attribute_name;
+        return $this;
     }
 
 }
