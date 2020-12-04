@@ -28,7 +28,7 @@ class LanguageNegotiationMiddleware implements MiddlewareInterface
     /**
      * @var LanguageNegotiator
      */
-    public $negotiator = "User-Agent";
+    public $negotiator;
 
 
     /**
