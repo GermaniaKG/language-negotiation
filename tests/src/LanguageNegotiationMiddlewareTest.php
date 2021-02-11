@@ -31,7 +31,7 @@ class LanguageNegotiationMiddlewareTest extends \PHPUnit\Framework\TestCase
         $this->psr17Factory = new Psr17Factory;
     }
 
-    public function testInstantiation()
+    public function testInstantiation() : LanguageNegotiationMiddleware
     {
 
         $sut = new LanguageNegotiationMiddleware($this->negotiator, $this->priorities);
@@ -46,7 +46,7 @@ class LanguageNegotiationMiddlewareTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testInstantiation
      */
-    public function testDoBusiness( $sut )
+    public function testDoBusiness( LanguageNegotiationMiddleware $sut )
     {
 
         $result_request = $this->psr17Factory
@@ -67,7 +67,7 @@ class LanguageNegotiationMiddlewareTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testInstantiation
      */
-    public function testDoublePass( $sut )
+    public function testDoublePass( LanguageNegotiationMiddleware $sut )
     {
 
         $result_request = $this->psr17Factory
@@ -92,7 +92,7 @@ class LanguageNegotiationMiddlewareTest extends \PHPUnit\Framework\TestCase
     /**
      * @depends testInstantiation
      */
-    public function testSinglePass( $sut )
+    public function testSinglePass( LanguageNegotiationMiddleware $sut )
     {
 
         $result_request = $this->psr17Factory
